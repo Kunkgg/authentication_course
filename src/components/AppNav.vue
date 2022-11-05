@@ -1,19 +1,27 @@
 <template>
   <div id="nav">
-    <RouterLink to="/">Home</RouterLink>
-    <RouterLink to="/dashboard">Dashboard</RouterLink>
-    <RouterLink to="/about">About</RouterLink>
+    <div>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/dashboard">Dashboard</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
+    </div>
+    <RouterLink v-if="!loggedIn" to="/login" class="button">Login</RouterLink>
   </div>
 </template>
 <script>
+import { authComputed } from '../store/helpers';
 export default {
-  name: 'AppNav'
+  name: 'AppNav',
+  computed: {
+    ...authComputed
+  }
 }
 </script>
-<style>
+<style scoped>
 #nav {
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
     min-height: 50px;
     padding: 0.2em 1em;
     background: linear-gradient(to right, #16c0b0, #84cf6a);
@@ -33,4 +41,19 @@ a {
     border-bottom: 2px solid #fff;
 }
 
+#nav .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5em;
+  height: 2em;
+  margin: 0.5em;
+  padding: 0.5em;
+  border-radius: 5px;
+  background: #fefefe;
+  font-size: 1em;
+  color: #2c3e50;
+  border: none;
+  outline: none;
+}
 </style>
