@@ -27,3 +27,28 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### start backend
+
+```sh
+node server.js
+```
+
+### start
+
+```sh
+npm run start
+```
+
+## 目标
+
+1. 注册
+1. 登录
+1. 访问受保护的数据
+
+## 登录后 vuex 需要做 3 件事
+
+1. 在 Vuex state 中存储 userData 
+1. 在 localstorage 中存储 userData
+1. 在 axios header 中增加 token
+
