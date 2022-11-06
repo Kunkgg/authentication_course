@@ -12,9 +12,13 @@ const store = createStore({
     SET_USER_DATA(state, userData) {
       state.user = userData;
       localStorage.setItem("user", JSON.stringify(userData));
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = userData.token;
+      axios.defaults.headers.common["Authorization"] = userData.token;
+    },
+    LOGOUT(state) {
+      localStorage.removeItem("user");
+      location.reload(); // 刷新页面可以清空 state 和 axios headers
+      state.user = null;
+      axios.defaults.headers.common["Authorization"] = null;
     },
   },
   actions: {
@@ -32,13 +36,16 @@ const store = createStore({
         .then(({ data }) => {
           commit("SET_USER_DATA", data);
         });
-    }
+    },
+    logout({ commit }) {
+      commit("LOGOUT");
+    },
   },
   getters: {
-    loggedIn (state) {
-      return !!state.user
-    }
-  }
+    loggedIn(state) {
+      return !!state.user;
+    },
+  },
 });
 
 export default store;

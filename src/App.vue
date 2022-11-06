@@ -9,7 +9,7 @@ export default {
 
 <template>
   <AppNav />
-  <RouterView class="page"/>
+  <RouterView />
 </template>
 
 <style scoped>
