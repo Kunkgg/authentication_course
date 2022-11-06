@@ -68,4 +68,31 @@ npm run start
 - 参考 [Navigation Guards](https://router.vuejs.org/guide/advanced/navigation-guards.html)
 - 参考 [Route Meta Fields](https://router.vuejs.org/guide/advanced/meta.html#typescript)
 
+## 保持登录
 
+- 登录后， 刷新页面或者关闭页面标签仍保持登录状态
+  - 从 localstorage 取出 userData, 调用 Vuex action
+
+## 恶意伪造 token 处理
+
+当攻击者试图使用伪造的 token 访问受保护资源, 中断并立即登出
+
+```js
+    new Vue({
+      router,
+      store,
+      created () {
+    	...
+    	axios.interceptors.response.use(
+            response => response, // simply return the response 
+    		error => {
+    		    if (error.response.status === 401) { // if we catch a 401 error
+    		     this.$store.dispatch('logout') // force a log out 
+    		}
+    		return Promise.reject(error) // reject the Promise, with the error as the reason
+    	    }
+    	)
+      },
+      render: h => h(App)
+    }).$mount('#app')
+```
