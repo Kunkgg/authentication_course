@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/dashboard", (req, res) => {
-  let credentails = req.headers.authorization
+  let credentails = req.headers.authorization;
   jwt.verify(credentails, "the_secret_key", (err) => {
     // verifies token
     if (err) {
@@ -40,12 +40,21 @@ app.post("/register", (req, res) => {
       password: req.body.password,
       // In a production app, you'll want to encrypt the password
     };
-
+    var errorsToSend = [];
     const data = JSON.stringify(user, null, 2);
     var dbUserEmail = require("./db/user.json").email;
 
-    if (dbUserEmail === req.body.email) {
-      res.sendStatus(400);
+    if (dbUserEmail === user.email) {
+      // check to see if email already exists in db
+      errorsToSend.push("An account with this email already exists.");
+    }
+    if (user.password.length < 5) {
+      // validate password is in correct format
+      errorsToSend.push("Password too short.");
+    }
+
+    if (errorsToSend.length > 0) {
+      res.status(400).json({ errors: errorsToSend });
     } else {
       fs.writeFile("./db/user.json", data, (err) => {
         if (err) {
@@ -82,7 +91,7 @@ app.post("/login", (req, res) => {
       name: userInfo.name,
     });
   } else {
-    res.sendStatus(400);
+    res.status(401).json({ error: "Invalid login. Please try again." });
   }
 });
 

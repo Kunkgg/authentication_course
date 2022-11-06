@@ -1,6 +1,6 @@
 
 <template>
-  <div>
+  <div class="page">
     <h1>Dashboard</h1>
     <template v-if="!isLoading">
       <EventCard v-for="event, index in events" :event="event" :key="index" />

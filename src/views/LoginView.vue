@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="page">
         <form @submit.prevent="login">
             <label for="email">
                 Email:
@@ -14,6 +14,7 @@
             <button type="submit" name="button">
                 Login
             </button>
+            <p>{{ error }}</p>
             <RouterLink to="/register">
                 Don't have an account? Register.
             </RouterLink>
@@ -25,7 +26,8 @@ export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            error: null
         }
     },
     methods: {
@@ -35,6 +37,8 @@ export default {
                 password: this.password,
             }).then(() => {
                 this.$router.push({ name: 'dashboard' })
+            }).catch(err => {
+                this.error = err.response.data.error
             })
         }
     }
